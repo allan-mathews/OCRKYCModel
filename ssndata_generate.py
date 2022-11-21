@@ -68,16 +68,29 @@ def generate_aug_ssn(record):
     return augmented_images
 
 
-def generate_images():
-    records = pd.read_csv('sssn_data.csv').to_dict(orient='records')
-    # records, range(len(records)):
-    for record, i in zip(records[:3], range(3)):
-        augmented_images = generate_aug_ssn(record)
-        for augmented_image, j in zip(augmented_images, range(32)):
-            # write all changed images
-            imageio.imwrite(
-                f'Data/ {str(i)}aug{str(j)}.PNG', augmented_images[j])
-    print('Success and done')
+def generate_images(record_len=None):
+    """_Generate the augmented images using this function_
+
+    Args:
+        record_len (_int_, optional): _Number of records of images to be given, each record is 32 images_. Defaults to None (64000 images).
+    """
+    try:
+        records = pd.read_csv('sssn_data.csv').to_dict(orient='records')
+        # records, range(len(records)):
+        if record_len is not None:
+            records = records[:record_len]
+        else:
+            record_len = len(records)
+        print(f'Number of total records{record_len*32}')
+        for record, i in zip(records, range(record_len)):
+            augmented_images = generate_aug_ssn(record)
+            for augmented_image, j in zip(augmented_images, range(32)):
+                # write all changed images
+                imageio.imwrite(
+                    f'Data/ {str(i+1)}aug{str(j+1)}.PNG', augmented_images[j])
+        print('Success and done')
+    except Exception as e:
+        print(f'Error occured here {e}')
 
 
-# generate_images()
+# generate_images(2)
