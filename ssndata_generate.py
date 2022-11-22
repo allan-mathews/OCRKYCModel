@@ -88,6 +88,8 @@ def generate_images(record_len=None):
                 # write all changed images
                 imageio.imwrite(
                     f'Data/ {str(i+1)}aug{str(j+1)}.PNG', augmented_images[j])
+                print(
+                    f'Progress {i+1}/{record_len} of batch {j+1}/32 complete')
         print('Success and done')
     except Exception as e:
         print(f'Error occured here {e}')
